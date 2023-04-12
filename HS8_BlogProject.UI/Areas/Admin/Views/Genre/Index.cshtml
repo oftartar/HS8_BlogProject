@@ -1,55 +1,59 @@
 ﻿@model List<GenreVM>
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 
 <div class="col-md-12">
-	<div class="card card-primary">
-		<div class="card-header">
-			<h3 class="card-title">List of Genres</h3>
-		</div>
-		<div class="card-body">
-			<table class="table table-hover table-bordered" id="genreTable">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th>Name</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model)
-					{
-						<tr>
-							<td>@item.Id</td>
-							<td>@item.Name</td>
-							<td>
-								<a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
-								<a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
-							</td>
-						</tr>
-					}
-				</tbody>
-				<tfoot>
-					<tr>
-						<th>ID</th>
-						<th>Name</th>
-						<th>Actions</th>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
-		<div class="card-footer">
-			<a asp-action="Create" class="btn btn-block btn-dark">Create New Genre</a>
-		</div>
-	</div>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">List of Genres</h3>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-bordered" id="genreTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model is not null)
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Create" class="btn btn-block btn-dark">Create New Genre</a>
+        </div>
+    </div>
 </div>
 
 @section Css{
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 }
 
 @section Scripts{
-	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-	<script>let table = new DataTable('#genreTable')</script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script>let table = new DataTable('#genreTable')</script>
 }
