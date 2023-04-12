@@ -1,0 +1,28 @@
+﻿@model UpdateGenreDTO
+
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title">Edit Genre</h3>
+		</div>
+		<form asp-action="Edit" method="post">
+			<div class="card-body">
+				<div class="form-group">
+					<label asp-for="Name"></label>
+					<input class="form-control" placeholder="Genre Name" asp-for="Name" />
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="card-footer">
+				<a asp-action="Index" class="btn btn-primary btn-sm float-end mr-2">Back to Genre List</a>
+				<input type="submit" class="btn btn-success btn-sm float-end mr-2" value="Update Genre" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />

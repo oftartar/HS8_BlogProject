@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "HS8_BlogProject.Application": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:54793;http://localhost:54796"
+    }
+  }
+}

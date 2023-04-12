@@ -1,0 +1,56 @@
+﻿@model List<PostDetailsVM>
+@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div class="col-md-12">
+	<div class="row">
+		@foreach (PostDetailsVM item in Model)
+		{
+			<div class="col-md-4">
+				<div class="card card-secondary">
+					<div class="card-header">
+						<h3 class="card-title">@item.Title</h3>
+					</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<img src="@item.ImagePath" width="100" />
+								</div>
+							</div>
+							<div class="col-md-8">
+								<p class="card-title">@item.Content</p>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						<span>
+							<img src="@item.AuthorImagePath" width="25" />
+						</span>
+						<span>
+							@item.AuthorFullName
+						</span>
+						<span class="float-right">
+							<img src="~/media/img/heart-regular.svg" width="15" />
+							@item.Likes.Count
+						</span>
+						<span class="float-right mr-2">
+							<img src="~/media/img/comment-regular.svg" width="15" />
+							@item.Comments.Count
+						</span>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+@section Css{
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+}
+
+@section Scripts{
+	<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+	<script>let table = new DataTable('#genreTable')</script>
+}

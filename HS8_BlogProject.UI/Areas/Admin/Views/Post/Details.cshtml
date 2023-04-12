@@ -1,0 +1,76 @@
+﻿@model PostDetailsVM
+
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<div class="col-md-12">
+	<div class="card card-primary">
+		<div class="card-header">
+			<h3 class="card-title">Update Post</h3>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						<img src="@Model.ImagePath" width="300" />
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="form-group">
+						<label asp-for="Title"></label>
+						<input class="form-control" asp-for="Title" readonly />
+					</div>
+					<div class="form-group">
+						<label asp-for="Content"></label>
+						<textarea asp-for="Content" class="form-control" readonly></textarea>
+					</div>
+					<div class="form-group">
+						<label>Genre Name</label>
+						<input class="form-control" asp-for="GenreName" readonly />
+					</div>
+					<div class="form-group">
+						<label>Author Name</label>
+						<input class="form-control" asp-for="AuthorFullName" readonly />
+					</div>
+					<div class="form-group">
+						<label>Like Count</label>
+						<input class="form-control" value="@Model.Likes.Count" readonly />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div>
+						<h3>Comments</h3>
+					</div>
+					@foreach (CommentVM comment in Model.Comments)
+					{
+						<div class="row">
+							<div class="col-md-8 offset-2">
+								<div class="card card-secondary">
+									<div class="card-header">
+										<h3 class="card-title">@comment.Title</h3>
+									</div>
+									<div class="card-body">
+										<p class="card-title">@comment.Content</p>
+									</div>
+									<div class="card-footer">
+										<div class="d-flex justify-content-end">
+											<p>@comment.AppUserName</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="card-footer">
+			<a asp-action="Index" class="btn btn-primary btn-sm float-end mr-2">Back to Post List</a>
+			<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary btn-sm float-end mr-2">Edit Post</a>
+		</div>
+	</div>
+
+	<partial name="_ValidationScriptsPartial" />
