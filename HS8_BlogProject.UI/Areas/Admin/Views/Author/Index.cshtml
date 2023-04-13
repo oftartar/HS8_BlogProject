@@ -1,22 +1,21 @@
-﻿@model List<PostVM>
+﻿@model List<AuthorVM>
 @{
-    ViewData["Title"] = "Post List";
+    ViewData["Title"] = "Author List";
 }
 
 <div class="col-md-12">
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">List of Posts</h3>
+            <h3 class="card-title">List of Authors</h3>
         </div>
         <div class="card-body">
-            <table class="table table-hover table-bordered" id="postTable">
+            <table class="table table-hover table-bordered" id="authorTable">
                 <thead>
                     <tr>
                         <th>Post Image</th>
-                        <th>Title</th>
-                        <th>Genre</th>
-                        <th>Content</th>
-                        <th>Author Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -27,12 +26,10 @@
                         {
                             <tr>
                                 <td><img src="@item.ImagePath" width="50" /></td>
-                                <td>@item.Title</td>
-                                <td>@item.GenreName</td>
-                                <td>@item.Content</td>
-                                <td>@item.AuthorFullName</td>
+                                <td>@item.FirstName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.AppUserName</td>
                                 <td>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
                                     <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
                                 </td>
@@ -44,17 +41,16 @@
                 <tfoot>
                     <tr>
                         <th>Post Image</th>
-                        <th>Title</th>
-                        <th>Genre</th>
-                        <th>Content</th>
-                        <th>Author Name</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
                         <th>Actions</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
         <div class="card-footer">
-            <a asp-action="Create" class="btn btn-block btn-dark">Create New Post</a>
+            <a asp-action="Create" class="btn btn-block btn-dark">Create New Author</a>
         </div>
     </div>
 </div>
@@ -65,5 +61,5 @@
 
 @section Scripts{
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script>let table = new DataTable('#postTable')</script>
+    <script>let table = new DataTable('#authorTable')</script>
 }

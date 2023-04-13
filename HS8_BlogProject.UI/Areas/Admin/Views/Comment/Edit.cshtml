@@ -1,0 +1,48 @@
+﻿@model UpdateCommentDTO
+
+@{
+    ViewData["Title"] = "Edit Comment";
+}
+
+<div class="col-md-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Update Comment</h3>
+        </div>
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="CreateDate" />
+            <div class="card-body">
+                <span asp-validation-for="Title" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="Title">Title</label>
+                    <input asp-for="Title" class="form-control" placeholder="Title" />
+                </div>
+                <span asp-validation-for="Content" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="Content">Content</label>
+                    <textarea asp-for="Content" class="form-control" placeholder="Content"></textarea>
+                </div>
+                <span asp-validation-for="PostId" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="PostId">Post</label>
+                    <select asp-for="PostId" class="custom-select" asp-items="@(new SelectList(Model.Posts,"Id","Title"))">
+                    </select>
+                </div>
+                <span asp-validation-for="AppUserId" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="AppUserId">Username</label>
+                    <select asp-for="AppUserId" class="custom-select" asp-items="@(new SelectList(Model.AppUsers,"Id","UserName"))">
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a asp-action="Index" class="btn btn-primary btn-sm float-end mr-2">Back to Comment List</a>
+                <input type="submit" class="btn btn-success btn-sm float-end mr-2" value="Update Comment" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

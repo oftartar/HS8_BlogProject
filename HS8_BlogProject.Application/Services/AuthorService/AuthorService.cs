@@ -27,19 +27,6 @@ namespace HS8_BlogProject.Application.Services.AuthorService
             {
                 Author author = _mapper.Map<Author>(model);
 
-                if (author.UploadPath != null)
-                {
-                    using var image = Image.Load(model.UploadPath.OpenReadStream());
-
-                    // Resize
-                    image.Mutate(x => x.Resize(600, 560));
-
-                    Guid guid = Guid.NewGuid();
-                    image.Save($"wwwroot/images/{guid}.jpg");
-
-                    author.ImagePath = $"/images/{guid}.jpg";
-                }
-
                 await _authorRepository.Create(author);
             }
         }
@@ -124,18 +111,6 @@ namespace HS8_BlogProject.Application.Services.AuthorService
             if (model != null)
             {
                 var author = _mapper.Map<Author>(model);
-
-                if (author.UploadPath != null)
-                {
-                    using var image = Image.Load(model.UploadPath.OpenReadStream());
-
-                    image.Mutate(x => x.Resize(600, 560));
-
-                    Guid guid = Guid.NewGuid();
-                    image.Save($"wwwroot/images/{guid}.jpg");
-
-                    author.ImagePath = $"/images/{guid}.jpg";
-                }
 
                 await _authorRepository.Update(author);
             }

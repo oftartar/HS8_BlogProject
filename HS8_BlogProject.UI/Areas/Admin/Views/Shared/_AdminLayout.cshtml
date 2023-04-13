@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>AdminLTE 3 | Fixed Sidebar</title>
+	<title>@ViewData["Title"]</title>
 
 	<!-- Google Font: Source Sans Pro -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -26,10 +26,7 @@
 					<a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
 				</li>
 				<li class="nav-item d-none d-sm-inline-block">
-					<a asp-action="Index" class="nav-link">Home</a>
-				</li>
-				<li class="nav-item d-none d-sm-inline-block">
-					<a href="#" class="nav-link">Contact</a>
+					<a asp-controller="Dashboard" class="nav-link">Home</a>
 				</li>
 			</ul>
 
@@ -74,9 +71,9 @@
 		<!-- Main Sidebar Container -->
 		<aside class="main-sidebar sidebar-dark-primary elevation-4">
 			<!-- Brand Logo -->
-			<a asp-controller="Post" class="brand-link">
+			<a asp-controller="Dashboard" class="brand-link">
 				<img src="~/media/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-				<span class="brand-text font-weight-light">Blog Project</span>
+				<span class="brand-text font-weight-light">Admin Panel</span>
 			</a>
 
 			<!-- Sidebar -->
@@ -85,6 +82,7 @@
 				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
 					<a asp-area="" asp-controller="Account" asp-action="ProfileDetails" asp-route-username="@User.Identity.Name">
 						<div class="image">
+							<!-- ToDo: User Image Ekle-->
 							<img src="~/images/defaultuser.jpg" class="img-circle elevation-2" alt="User Image">
 							<span>@User.Identity.Name</span>
 						</div>
@@ -109,10 +107,18 @@
 						<!-- Add icons to the links using the .nav-icon class
 							 with font-awesome or any other icon font library -->
 						<li class="nav-item">
-							<a asp-controller="Post" class="nav-link">
+							<a asp-controller="Author" class="nav-link">
 								<i class="nav-icon fas fa-tachometer-alt"></i>
 								<p>
-									Posts
+									Authors
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a asp-controller="Comment" class="nav-link">
+								<i class="nav-icon fas fa-tachometer-alt"></i>
+								<p>
+									Comments
 								</p>
 							</a>
 						</li>
@@ -121,6 +127,22 @@
 								<i class="nav-icon fas fa-tachometer-alt"></i>
 								<p>
 									Genres
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a asp-controller="Like" class="nav-link">
+								<i class="nav-icon fas fa-tachometer-alt"></i>
+								<p>
+									Likes
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a asp-controller="Post" class="nav-link">
+								<i class="nav-icon fas fa-tachometer-alt"></i>
+								<p>
+									Posts
 								</p>
 							</a>
 						</li>

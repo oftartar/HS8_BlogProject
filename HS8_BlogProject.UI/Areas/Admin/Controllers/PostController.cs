@@ -1,5 +1,6 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.PostDTOs;
 using HS8_BlogProject.Application.Models.VMs.PostVMs;
+using HS8_BlogProject.Domain.Entities;
 using HS8_BlogProject.UI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,8 +23,22 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 		public async Task<IActionResult> Create(CreatePostDTO model)
 		{
 			if (ModelState.IsValid)
-			{
-				ControllerRepository.ApiHttpPost<CreatePostDTO>("Post/Create", model);
+            {
+
+                if (model.UploadPath != null)
+                {
+                    using var image = Image.Load(model.UploadPath.OpenReadStream());
+
+                    image.Mutate(x => x.Resize(600, 560));
+
+                    Guid guid = Guid.NewGuid();
+                    image.Save($"wwwroot/images/{guid}.jpg");
+
+                    model.ImagePath = $"/images/{guid}.jpg";
+                    model.UploadPath = null;
+                }
+
+                ControllerRepository.ApiHttpPost<CreatePostDTO>("Post/Create", model);
 				return RedirectToAction("Index");
 			}
 			return RedirectToAction("Create");
@@ -39,8 +54,22 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 		public async Task<IActionResult> Edit(UpdatePostDTO model)
 		{
 			if (ModelState.IsValid)
-			{
-				ControllerRepository.ApiHttpPut<UpdatePostDTO>("Post/Update", model);
+            {
+
+                if (model.UploadPath != null)
+                {
+                    using var image = Image.Load(model.UploadPath.OpenReadStream());
+
+                    image.Mutate(x => x.Resize(600, 560));
+
+                    Guid guid = Guid.NewGuid();
+                    image.Save($"wwwroot/images/{guid}.jpg");
+
+                    model.ImagePath = $"/images/{guid}.jpg";
+                    model.UploadPath = null;
+                }
+
+                ControllerRepository.ApiHttpPut<UpdatePostDTO>("Post/Update", model);
 				return RedirectToAction("Index");
 			}
 			return RedirectToAction("Edit");

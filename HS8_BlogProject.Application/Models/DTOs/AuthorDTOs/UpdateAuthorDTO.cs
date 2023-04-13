@@ -16,6 +16,7 @@ namespace HS8_BlogProject.Application.Models.DTOs.AuthorDTOs
 		public DateTime CreateDate { get; set; }
 		public DateTime UpdateDate => DateTime.Now;
         public Status Status => Status.Modified;
+        public string AppUserId { get; set; }
         public List<AppUserVM>? AppUsers { get; set; }
     }
 }

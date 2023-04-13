@@ -6,11 +6,11 @@ namespace HS8_BlogProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AppUserController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly IAppUserService _appUserService;
 
-        public AppUserController(IAppUserService appUserService)
+        public AccountController(IAppUserService appUserService)
         {
             _appUserService = appUserService;
         }

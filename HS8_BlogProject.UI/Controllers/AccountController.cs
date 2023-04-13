@@ -27,7 +27,7 @@ namespace HS8_BlogProject.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var httpResponse = ControllerRepository.ApiHttpPost("AppUser/Register", registerDTO);
+                var httpResponse = ControllerRepository.ApiHttpPost("Account/Register", registerDTO);
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     var result = JsonConvert.DeserializeObject<ClaimsPrincipal>(httpResponse.Content.ReadAsStringAsync().Result);
@@ -66,7 +66,7 @@ namespace HS8_BlogProject.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var httpResponse = ControllerRepository.ApiHttpPost("AppUser/Login", loginDTO);
+                var httpResponse = ControllerRepository.ApiHttpPost("Account/Login", loginDTO);
                 if (httpResponse.IsSuccessStatusCode)
                 {
                     var result = JsonConvert.DeserializeObject<ClaimsPrincipal>(httpResponse.Content.ReadAsStringAsync().Result);

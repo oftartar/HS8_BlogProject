@@ -37,19 +37,6 @@ namespace HS8_BlogProject.Application.Services.PostService
             {
                 Post post = _mapper.Map<Post>(model);
 
-                if (post.UploadPath != null)
-                {
-                    using var image = Image.Load(model.UploadPath.OpenReadStream());
-
-                    // Resize
-                    image.Mutate(x => x.Resize(600, 560));
-
-                    Guid guid = Guid.NewGuid();
-                    image.Save($"wwwroot/images/{guid}.jpg");
-
-                    post.ImagePath = $"/images/{guid}.jpg";
-                }
-
                 await _postRepository.Create(post);
             }
         }
@@ -87,12 +74,29 @@ namespace HS8_BlogProject.Application.Services.PostService
 
         public async Task Delete(int id)
         {
-            Post post = await _postRepository.GetDefault(x => x.Id == id);
+            var post = await _postRepository.GetFilteredFirstOrDefault(
+                select: x => x,
+                where: x => x.Id == id,
+                include: x => x.Include(x => x.Author).Include(x => x.Genre).Include(x => x.Comments).Include(x => x.Likes));
 
             if (post != null)
             {
                 post.DeleteDate = DateTime.Now;
                 post.Status = Status.Passive;
+
+                foreach (var comment in post.Comments)
+                {
+                    comment.DeleteDate = DateTime.Now;
+                    comment.Status = Status.Passive;
+                    await _commentRepository.Delete(comment);
+                }
+
+                foreach (var like in post.Likes)
+                {
+                    like.DeleteDate = DateTime.Now;
+                    like.Status = Status.Passive;
+                    await _likeRepository.Delete(like);
+                }
 
                 await _postRepository.Delete(post);
             }
@@ -163,18 +167,6 @@ namespace HS8_BlogProject.Application.Services.PostService
             {
                 var post = _mapper.Map<Post>(model);
 
-                if (post.UploadPath != null)
-                {
-                    using var image = Image.Load(model.UploadPath.OpenReadStream());
-
-                    image.Mutate(x => x.Resize(600, 560));
-
-                    Guid guid = Guid.NewGuid();
-                    image.Save($"wwwroot/images/{guid}.jpg");
-
-                    post.ImagePath = $"/images/{guid}.jpg";
-                }
-
                 await _postRepository.Update(post);
             }
         }
@@ -193,43 +185,12 @@ namespace HS8_BlogProject.Application.Services.PostService
                     AuthorFirstName = x.Author.FirstName,
                     AuthorLastName = x.Author.LastName,
                     AuthorImagePath = x.Author.ImagePath,
-                    GenreName = x.Genre.Name
+                    GenreName = x.Genre.Name,
+                    Likes = _mapper.Map<List<LikeVM>>(x.Likes),
+                    Comments = _mapper.Map<List<CommentVM>>(x.Comments)
                 },
                 where: x => x.Id == id,
-                include: x => x.Include(x => x.Author).Include(x => x.Genre));
-
-            if (post != null)
-            {
-                post.Comments = await _commentRepository.GetFilteredList(
-                    select: x => new CommentVM
-                    {
-                        Id = x.Id,
-                        Title = x.Title,
-                        Content = x.Content,
-                        AppUserName = x.AppUser.UserName,
-                        PostTitle = x.Post.Title,
-                        AppUserId = x.AppUserId,
-                        PostId = x.PostId
-                    },
-                    where: x => x.Status != Status.Passive,
-                    orderBy: x => x.OrderBy(x => x.Title),
-                    include: x => x.Include(x => x.AppUser).Include(x => x.Post)
-                    );
-
-                post.Likes = await _likeRepository.GetFilteredList(
-                    select: x => new LikeVM
-                    {
-                        Id = x.Id,
-                        AppUserName = x.AppUser.UserName,
-                        PostTitle = x.Post.Title,
-                        AppUserId = x.AppUserId,
-                        PostId = x.PostId
-                    },
-                    where: x => x.Status != Status.Passive,
-                    orderBy: x => x.OrderBy(x => x.Id),
-                    include: x => x.Include(x => x.AppUser).Include(x => x.Post)
-                    );
-            }
+                include: x => x.Include(x => x.Author).Include(x => x.Genre).Include(x => x.Comments).Include(x => x.Likes));
 
             return post;
         }
@@ -248,44 +209,14 @@ namespace HS8_BlogProject.Application.Services.PostService
                     AuthorFirstName = x.Author.FirstName,
                     AuthorLastName = x.Author.LastName,
                     AuthorImagePath = x.Author.ImagePath,
-                    GenreName = x.Genre.Name
+                    GenreName = x.Genre.Name,
+                    Likes = _mapper.Map<List<LikeVM>>(x.Likes),
+                    Comments = _mapper.Map<List<CommentVM>>(x.Comments)
                 },
                 where: x => x.Status != Status.Passive,
-                orderBy: x => x.OrderByDescending(x => x.CreateDate)
+                orderBy: x => x.OrderByDescending(x => x.CreateDate),
+                include: x => x.Include(x => x.Author).Include(x => x.Genre).Include(x => x.Comments).Include(x => x.Likes)
                 );
-
-            foreach (var post in posts)
-            {
-                post.Comments = await _commentRepository.GetFilteredList(
-                select: x => new CommentVM
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Content = x.Content,
-                    AppUserName = x.AppUser.UserName,
-                    PostTitle = x.Post.Title,
-                    AppUserId = x.AppUserId,
-                    PostId = x.PostId
-                },
-                where: x => x.Status != Status.Passive,
-                orderBy: x => x.OrderBy(x => x.Title),
-                include: x => x.Include(x => x.AppUser).Include(x => x.Post)
-                );
-
-                post.Likes = await _likeRepository.GetFilteredList(
-                    select: x => new LikeVM
-                    {
-                        Id = x.Id,
-                        AppUserName = x.AppUser.UserName,
-                        PostTitle = x.Post.Title,
-                        AppUserId = x.AppUserId,
-                        PostId = x.PostId
-                    },
-                    where: x => x.Status != Status.Passive,
-                    orderBy: x => x.OrderBy(x => x.Id),
-                    include: x => x.Include(x => x.AppUser).Include(x => x.Post)
-                    );
-            }
 
             return posts;
         }

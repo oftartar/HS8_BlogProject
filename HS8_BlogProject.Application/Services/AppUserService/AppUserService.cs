@@ -87,19 +87,6 @@ namespace HS8_BlogProject.Application.Services.AppUserService
                             await _userManager.SetEmailAsync(user, model.Email);
                     }
 
-                    if (model.UploadPath != null)
-                    {
-                        using var image = Image.Load(model.UploadPath.OpenReadStream());
-
-                        // Resize
-                        image.Mutate(x => x.Resize(600, 560));
-
-                        Guid guid = Guid.NewGuid();
-                        image.Save($"wwwroot/images/{guid}.jpg");
-
-                        user.ImagePath = $"/images/{guid}.jpg";
-                    }
-
                     user.UpdateDate = DateTime.Now;
                     user.Status = Status.Modified;
 

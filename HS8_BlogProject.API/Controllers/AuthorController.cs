@@ -1,6 +1,5 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.AuthorDTOs;
 using HS8_BlogProject.Application.Services.AuthorService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HS8_BlogProject.API.Controllers
@@ -29,7 +28,7 @@ namespace HS8_BlogProject.API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
+        [Route("[action]/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var author = await _authorService.GetById(id);

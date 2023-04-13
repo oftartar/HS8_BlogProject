@@ -1,0 +1,46 @@
+﻿@model CreateAuthorDTO
+
+@{
+    ViewData["Title"] = "Create Author";
+}
+
+<div class="col-md-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Create Author</h3>
+        </div>
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="card-body">
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="FirstName">First Name</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                </div>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="LastName">Last Name</label>
+                    <input asp-for="LastName" class="form-control" placeholder="Last Name"></input>
+                </div>
+                <span asp-validation-for="UploadPath" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="UploadPath">Photo</label>
+                    <input asp-for="UploadPath" type="file" class="form-control" placeholder="Photo">
+                </div>
+                <span asp-validation-for="AppUserId" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="AppUserId">Username</label>
+                    <select asp-for="AppUserId" class="custom-select" asp-items="@(new SelectList(Model.AppUsers,"Id","UserName"))">
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a asp-action="Index" class="btn btn-primary btn-sm float-end mr-2">Back to Author List</a>
+                <input type="submit" class="btn btn-success btn-sm float-end mr-2" value="Create Author" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

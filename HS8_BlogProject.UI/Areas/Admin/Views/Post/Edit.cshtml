@@ -1,7 +1,7 @@
 ﻿@model UpdatePostDTO
 
 @{
-	ViewData["Title"] = "Edit";
+	ViewData["Title"] = "Edit Post";
 }
 
 <div class="col-md-12">
@@ -11,16 +11,17 @@
 		</div>
 		<form asp-action="Edit" method="post" enctype="multipart/form-data">
 			<input type="hidden" asp-for="ImagePath" />
+			<input type="hidden" asp-for="CreateDate" />
 			<div class="card-body">
+				<span asp-validation-for="Title" class="text-danger"></span>
 				<div class="form-group">
 					<label asp-for="Title"></label>
-					<input class="form-control" placeholder="Title" asp-for="Title" />
-					<span asp-validation-for="Title" class="text-danger"></span>
+					<input asp-for="Title" class="form-control" placeholder="Title" />
 				</div>
+				<span asp-validation-for="Content" class="text-danger"></span>
 				<div class="form-group">
 					<label asp-for="Content"></label>
 					<textarea asp-for="Content" class="form-control" placeholder="Enter Content"></textarea>
-					<span asp-validation-for="Content" class="text-danger"></span>
 				</div>
 				<span asp-validation-for="UploadPath" class="text-danger"></span>
 				<div class="form-group">
@@ -39,13 +40,15 @@
 					<select asp-for="GenreId" class="custom-select" asp-items="@(new SelectList(Model.Genres,"Id","Name"))">
 					</select>
 				</div>
-				<div class="card-footer">
-					<a asp-action="Index" class="btn btn-primary btn-sm float-end mr-2">Back to Post List</a>
-					<input type="submit" class="btn btn-success btn-sm float-end mr-2" value="Update Post" />
-				</div>
+			</div>
+			<div class="card-footer">
+				<a asp-action="Index" class="btn btn-primary btn-sm float-end mr-2">Back to Post List</a>
+				<input type="submit" class="btn btn-success btn-sm float-end mr-2" value="Create Post" />
 			</div>
 		</form>
 	</div>
 </div>
 
-<partial name="_ValidationScriptsPartial" />
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+}

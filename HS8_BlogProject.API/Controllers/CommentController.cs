@@ -29,7 +29,7 @@ namespace HS8_BlogProject.API.Controllers
         }
 
         [HttpGet]
-        [Route("[action]")]
+        [Route("[action]/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var comment = await _commentService.GetById(id);

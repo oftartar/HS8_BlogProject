@@ -1,19 +1,19 @@
-﻿@model List<GenreVM>
+﻿@model List<LikeVM>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Like List";
 }
 
 <div class="col-md-12">
     <div class="card card-primary">
         <div class="card-header">
-            <h3 class="card-title">List of Genres</h3>
+            <h3 class="card-title">List of Like</h3>
         </div>
         <div class="card-body">
-            <table class="table table-hover table-bordered" id="genreTable">
+            <table class="table table-hover table-bordered" id="likeTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
+                        <th>Post Title</th>
+                        <th>Username</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -23,27 +23,27 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>@item.Id</td>
-                                <td>@item.Name</td>
+                                <td>@item.PostTitle</td>
+                                <td>@item.AppUserName</td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
                                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
                                 </td>
                             </tr>
                         }
+
                     }
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
+                        <th>Post Title</th>
+                        <th>Username</th>
                         <th>Actions</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
         <div class="card-footer">
-            <a asp-action="Create" class="btn btn-block btn-dark">Create New Genre</a>
+            <a asp-action="Create" class="btn btn-block btn-dark">Create New Like</a>
         </div>
     </div>
 </div>
@@ -54,5 +54,5 @@
 
 @section Scripts{
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script>let table = new DataTable('#genreTable')</script>
+    <script>let table = new DataTable('#likeTable')</script>
 }
