@@ -1,0 +1,92 @@
+﻿@model RegisterDTO
+
+@{
+	Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Blog Register</title>
+
+	<!-- Google Font: Source Sans Pro -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="~/media/css/all.min.css">
+	<!-- icheck bootstrap -->
+	<link rel="stylesheet" href="~/media/css/icheck-bootstrap.min.css">
+	<!-- Theme style -->
+	<link rel="stylesheet" href="~/media/css/adminlte.min.css">
+</head>
+<body class="hold-transition register-page">
+	<div class="register-box">
+		<div class="card card-outline card-primary">
+			<div class="card-header text-center">
+				<a asp-action="Register" class="h1"><b>Blog</b> App</a>
+			</div>
+			<div class="card-body">
+				<p class="login-box-msg">Register a new membership</p>
+
+				<form asp-action="Register" method="post">
+					<span asp-validation-for="UserName" class="text-danger"></span>
+					<div class="input-group mb-3">
+						<input asp-for="UserName" type="text" class="form-control" placeholder="User Name">
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span class="fas fa-user"></span>
+							</div>
+						</div>
+					</div>
+					<span asp-validation-for="Email" class="text-danger"></span>
+					<div class="input-group mb-3">
+						<input asp-for="Email" type="email" class="form-control" placeholder="Email">
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span class="fas fa-envelope"></span>
+							</div>
+						</div>
+					</div>
+					<span asp-validation-for="Password" class="text-danger"></span>
+					<div class="input-group mb-3">
+						<input asp-for="Password" type="password" class="form-control" placeholder="Password">
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span class="fas fa-lock"></span>
+							</div>
+						</div>
+					</div>
+					<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+					<div class="input-group mb-3">
+						<input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Retype password">
+						<div class="input-group-append">
+							<div class="input-group-text">
+								<span class="fas fa-lock"></span>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-6">
+							<a asp-action="Login" class="btn btn-success btn-block">Login</a>
+						</div>
+						<!-- /.col -->
+						<div class="col-6">
+							<input type="submit" class="btn btn-primary btn-block" value="Register" />
+						</div>
+						<!-- /.col -->
+					</div>
+				</form>
+			</div>
+			<!-- /.form-box -->
+		</div><!-- /.card -->
+	</div>
+	<!-- /.register-box -->
+	<!-- jQuery -->
+	<script src="~/media/js/jquery.min.js"></script>
+	<!-- Bootstrap 4 -->
+	<script src="~/media/js/bootstrap.bundle.min.js"></script>
+	<!-- AdminLTE App -->
+	<script src="~/media/js/adminlte.min.js"></script>
+</body>
+</html>

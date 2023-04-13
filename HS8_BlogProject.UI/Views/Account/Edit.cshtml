@@ -1,0 +1,76 @@
+﻿@model UpdateProfileDTO
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="edit-box offset-4">
+	<div class="card card-outline card-primary">
+		<div class="card-header text-center">
+			<a asp-action="Edit" class="h1"><b>Blog</b> App</a>
+		</div>
+		<div class="card-body">
+			<p class="edit-box-msg">Edit Profile</p>
+			<form asp-action="Edit" method="post" enctype="multipart/form-data">
+				<input type="hidden" asp-for="Id"/>
+				<input type="hidden" asp-for="ImagePath"/>
+				<span asp-validation-for="UserName" class="text-danger"></span>
+				<div class="input-group mb-3">
+					<input asp-for="UserName" type="text" class="form-control" placeholder="User Name">
+					<div class="input-group-append">
+						<div class="input-group-text">
+							<span class="fas fa-user"></span>
+						</div>
+					</div>
+				</div>
+				<span asp-validation-for="Email" class="text-danger"></span>
+				<div class="input-group mb-3">
+					<input asp-for="Email" type="email" class="form-control" placeholder="Email">
+					<div class="input-group-append">
+						<div class="input-group-text">
+							<span class="fas fa-envelope"></span>
+						</div>
+					</div>
+				</div>
+				<span asp-validation-for="Password" class="text-danger"></span>
+				<div class="input-group mb-3">
+					<input asp-for="Password" type="password" class="form-control" placeholder="Password">
+					<div class="input-group-append">
+						<div class="input-group-text">
+							<span class="fas fa-lock"></span>
+						</div>
+					</div>
+				</div>
+				<span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+				<div class="input-group mb-3">
+					<input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Retype password">
+					<div class="input-group-append">
+						<div class="input-group-text">
+							<span class="fas fa-lock"></span>
+						</div>
+					</div>
+				</div>
+				<span asp-validation-for="UploadPath" class="text-danger"></span>
+				<div class="input-group mb-3">
+					<input asp-for="UploadPath" type="file" class="form-control" placeholder="UploadPath">
+					<div class="input-group-append">
+						<div class="input-group-text">
+							<span class="fas fa-camera"></span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-6"> 
+						<a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-block">Back to Home Page</a>
+					</div>
+					<!-- /.col -->
+					<div class="col-6">
+						<input type="submit" class="btn btn-success btn-block" value="Edit Profile" />
+					</div>
+					<!-- /.col -->
+				</div>
+			</form>
+		</div>
+		<!-- /.form-box -->
+	</div><!-- /.card -->
+</div>

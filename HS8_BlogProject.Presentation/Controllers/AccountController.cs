@@ -33,7 +33,7 @@ namespace HS8_BlogProject.Presentation.Controllers
 			if (ModelState.IsValid)
 			{
 				var result = await _appUserService.Register(registerDTO);
-				if (result.Succeeded)
+                if (result.Succeeded)
 					return RedirectToAction("Index", "");
 				foreach (var item in result.Errors)
 				{

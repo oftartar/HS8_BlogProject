@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
 namespace HS8_BlogProject.UI.Controllers
@@ -28,7 +29,7 @@ namespace HS8_BlogProject.UI.Controllers
 			return default(T);
 		}
 
-		public static void ApiHttpPost<T>(string apiAction, T model)
+		public static HttpResponseMessage ApiHttpPost<T>(string apiAction, T model)
 		{
 			using (var client = new HttpClient())
 			{
@@ -36,11 +37,12 @@ namespace HS8_BlogProject.UI.Controllers
 				client.DefaultRequestHeaders.Accept.Clear();
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				HttpResponseMessage getData = client.PostAsJsonAsync<T>(apiAction, model).Result;
+                HttpResponseMessage getData = client.PostAsJsonAsync<T>(apiAction, model).Result;
+                return getData;
 			}
 		}
 
-		public static void ApiHttpPut<T>(string apiAction, T model)
+		public static HttpResponseMessage ApiHttpPut<T>(string apiAction, T model)
 		{
 			using (var client = new HttpClient())
 			{
@@ -48,11 +50,12 @@ namespace HS8_BlogProject.UI.Controllers
 				client.DefaultRequestHeaders.Accept.Clear();
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				HttpResponseMessage getData = client.PutAsJsonAsync<T>(apiAction, model).Result;
-			} 
+                HttpResponseMessage getData = client.PutAsJsonAsync<T>(apiAction, model).Result;
+                return getData;
+            } 
 		}
 
-		public static void ApiHttpDelete(string apiAction)
+		public static HttpResponseMessage ApiHttpDelete(string apiAction)
 		{
 			using (var client = new HttpClient())
 			{
@@ -60,8 +63,9 @@ namespace HS8_BlogProject.UI.Controllers
 				client.DefaultRequestHeaders.Accept.Clear();
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-				HttpResponseMessage getData = client.DeleteAsync(apiAction).Result;
-			}
+                HttpResponseMessage getData = client.DeleteAsync(apiAction).Result;
+                return getData;
+            }
 		}
 	}
 }
