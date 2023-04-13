@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HS8_BlogProject.Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HS8_BlogProject.API", "HS8_BlogProject.API\HS8_BlogProject.API.csproj", "{8D4124F8-9104-4606-92AE-D78075FFE647}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HS8_BlogProject.UI", "HS8_BlogProject.UI\HS8_BlogProject.UI.csproj", "{8C69AFA8-72FB-41EE-9550-1D4B57EED855}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HS8_BlogProject.UI", "HS8_BlogProject.UI\HS8_BlogProject.UI.csproj", "{8C69AFA8-72FB-41EE-9550-1D4B57EED855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

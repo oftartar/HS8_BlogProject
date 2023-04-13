@@ -1,7 +1,6 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.AppUserDTOs;
 using HS8_BlogProject.Application.Services.AppUserService;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace HS8_BlogProject.API.Controllers
 {
@@ -15,7 +14,6 @@ namespace HS8_BlogProject.API.Controllers
         {
             _appUserService = appUserService;
         }
-
         [HttpGet]
         [Route("[action]/{username}")]
         public async Task<IActionResult> GetByUserName(string username)
