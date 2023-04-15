@@ -1,4 +1,5 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.AppUserDTOs;
+using HS8_BlogProject.Application.Models.DTOs.AuthorDTOs;
 using HS8_BlogProject.Application.Services.AppUserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -87,6 +88,59 @@ namespace HS8_BlogProject.UI.Controllers
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
+            }
+            else
+            {
+                //return RedirectToAction("Index", nameof(Areas.Member.Controllers.HomeController));
+                return RedirectToAction("Index", "");
+            }
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            var httpResponse = ControllerRepository.ApiHttpPost("Account/Logout",User);
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> Edit(string username)
+        {
+            if (username != "")
+            {
+                var user = ControllerRepository.ApiHttpGet<UpdateProfileDTO>("Account/GetByUserName/" + username);
+                return View(user);
+            }
+            else
+            {
+                //return RedirectToAction("Index", nameof(Areas.Member.Controllers.HomeController));
+                return RedirectToAction("Index", "");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UpdateProfileDTO updateProfileDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    ControllerRepository.ApiHttpPut<UpdateProfileDTO>("Author/Update", updateProfileDTO);
+
+                }
+                catch (Exception)
+                {
+                    TempData["Error"] = "Something went wrong";
+                }
+                return RedirectToAction("Index", "");
+            }
+            return View(updateProfileDTO);
+        }
+
+        public async Task<IActionResult> ProfileDetails(string username)
+        {
+            if (username != "")
+            {
+                var user = ControllerRepository.ApiHttpGet<UpdateProfileDTO>("Account/GetByUserName/" + username);
+                return View(user);
             }
             else
             {
