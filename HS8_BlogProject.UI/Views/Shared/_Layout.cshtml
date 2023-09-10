@@ -91,19 +91,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
                 <!-- Right navbar links -->
                 <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                    @if (User.Identity.IsAuthenticated)
+                    @if (@Context.Request.Cookies["username"] is not null)
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-controller="" asp-action="">Admin Panel</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="ProfileDetails" asp-route-username="@User.Identity.Name">View Profile</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="ProfileDetails" asp-route-username="@Context.Request.Cookies["username"]">View Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="Edit" asp-route-username="@User.Identity.Name">Edit Profile</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Edit" asp-route-username="@Context.Request.Cookies["username"]">Edit Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="LogOut">@User.Identity.Name, Log Out!</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="LogOut">@Context.Request.Cookies["username"], Log Out!</a>
                         </li>
                     }
                     else

@@ -5,6 +5,7 @@ using HS8_BlogProject.Application.Models.VMs.AuthorVMs;
 using HS8_BlogProject.Domain.Entities;
 using HS8_BlogProject.Domain.Enums;
 using HS8_BlogProject.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace HS8_BlogProject.Application.Services.AuthorService
 {
@@ -72,9 +73,12 @@ namespace HS8_BlogProject.Application.Services.AuthorService
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     ImagePath = x.ImagePath,
+                    AppUserId = x.AppUser.Id,
+                    AppUserName = x.AppUser.UserName
                 },
                 where: x => x.Status != Status.Passive,
-                orderBy: x => x.OrderBy(x => x.FirstName)
+                orderBy: x => x.OrderBy(x => x.FirstName),
+                include: x => x.Include(x => x.AppUser)
                 );
 
             return authors;

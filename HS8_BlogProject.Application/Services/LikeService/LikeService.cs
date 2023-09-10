@@ -135,8 +135,8 @@ namespace HS8_BlogProject.Application.Services.LikeService
                 {
                     Id = x.Id,
                     AppUserName = x.AppUser.UserName,
+                    AppUserId = x.AppUser.Id,
                     PostTitle = x.Post.Title,
-                    AppUserId = x.AppUserId,
                     PostId = x.PostId
                 },
                 where: x => x.Status != Status.Passive,

@@ -1,8 +1,12 @@
-﻿using HS8_BlogProject.Application.Models.DTOs.PostDTOs;
+﻿using HS8_BlogProject.Application.Models.DTOs.AuthorDTOs;
+using HS8_BlogProject.Application.Models.DTOs.PostDTOs;
+using HS8_BlogProject.Application.Models.VMs.AuthorVMs;
 using HS8_BlogProject.Application.Models.VMs.PostVMs;
 using HS8_BlogProject.Domain.Entities;
 using HS8_BlogProject.UI.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 {
@@ -10,13 +14,31 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 	public class PostController : Controller
 	{
 		public async Task<IActionResult> Index()
-		{
-			return View(ControllerRepository.ApiHttpGet<List<PostVM>>("Post/GetPosts"));
+        {
+            var getData = ControllerRepository.ApiHttpGet<List<PostVM>>("Post/GetPosts", Request.Cookies["X-Access-Token"]);
+
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<List<PostVM>>(results);
+
+                return View(model);
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path });
 		}
 
 		public async Task<IActionResult> Create()
-		{
-			return View(ControllerRepository.ApiHttpGet<CreatePostDTO>("Post/CreatePost"));
+        {
+            var getData = ControllerRepository.ApiHttpGet<CreatePostDTO>("Post/CreatePost", Request.Cookies["X-Access-Token"]);
+
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<CreatePostDTO>(results);
+
+                return View(model);
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path });
 		}
 
 		[HttpPost]
@@ -38,7 +60,7 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
                     model.UploadPath = null;
                 }
 
-                ControllerRepository.ApiHttpPost<CreatePostDTO>("Post/Create", model);
+                ControllerRepository.ApiHttpPost<CreatePostDTO>("Post/Create", model, Request.Cookies["X-Access-Token"]);
 				return RedirectToAction("Index");
 			}
 			return RedirectToAction("Create");
@@ -46,8 +68,16 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Edit(int id)
 		{
-			UpdatePostDTO model = ControllerRepository.ApiHttpGet<UpdatePostDTO>("Post/GetById/" + id);
-			return View(model);
+            var getData = ControllerRepository.ApiHttpGet<UpdatePostDTO>("Post/GetById/" + id, Request.Cookies["X-Access-Token"]);
+
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<UpdatePostDTO>(results);
+
+                return View(model);
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path, id });
 		}
 
 		[HttpPost]
@@ -69,7 +99,7 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
                     model.UploadPath = null;
                 }
 
-                ControllerRepository.ApiHttpPut<UpdatePostDTO>("Post/Update", model);
+                ControllerRepository.ApiHttpPut<UpdatePostDTO>("Post/Update", model, Request.Cookies["X-Access-Token"]);
 				return RedirectToAction("Index");
 			}
 			return RedirectToAction("Edit");
@@ -77,13 +107,21 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Details(int id)
 		{
-			PostDetailsVM model = ControllerRepository.ApiHttpGet<PostDetailsVM>("Post/GetPostDetails/" + id);
-			return View(model);
+            var getData = ControllerRepository.ApiHttpGet<PostDetailsVM>("Post/GetPostDetails/" + id, Request.Cookies["X-Access-Token"]);
+
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<PostDetailsVM>(results);
+
+                return View(model);
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path, id });
 		}
 
 		public async Task<IActionResult> Delete(int id)
 		{
-			ControllerRepository.ApiHttpDelete("Post/Delete/" + id);
+			ControllerRepository.ApiHttpDelete("Post/Delete/" + id, Request.Cookies["X-Access-Token"]);
 
 			return RedirectToAction("Index");
 		}

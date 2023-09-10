@@ -1,5 +1,6 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.GenreDTOs;
 using HS8_BlogProject.Application.Services.GenreService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,8 @@ namespace HS8_BlogProject.API.Controllers
 {
     [Route("api/[controller]")]
 	[ApiController]
-	public class GenreController : ControllerBase
+    [Authorize]
+    public class GenreController : ControllerBase
 	{
 		private readonly IGenreService _genreService;
 

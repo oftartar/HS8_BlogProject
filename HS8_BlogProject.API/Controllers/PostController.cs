@@ -1,5 +1,6 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.PostDTOs;
 using HS8_BlogProject.Application.Services.PostService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace HS8_BlogProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PostController : ControllerBase
     {
         private readonly IPostService _postService;
@@ -90,6 +92,7 @@ namespace HS8_BlogProject.API.Controllers
 
 		[HttpGet]
 		[Route("[action]")]
+        [AllowAnonymous]
 		public async Task<IActionResult> GetPostsForMember()
 		{
 			var posts = await _postService.GetPostsForMember();

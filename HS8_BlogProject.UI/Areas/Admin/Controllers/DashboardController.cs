@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 
 namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 {
@@ -6,8 +7,12 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 	{
 		[Area("Admin")]
 		public IActionResult Index()
-		{
-			return View();
+        {
+			if (Request.Cookies["X-Access-Token"] is not null)
+			{
+				return View();
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path });
 		}
 	}
 }

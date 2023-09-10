@@ -1,7 +1,11 @@
-﻿using HS8_BlogProject.Application.Models.DTOs.GenreDTOs;
+﻿using HS8_BlogProject.Application.Models.DTOs.AuthorDTOs;
+using HS8_BlogProject.Application.Models.DTOs.GenreDTOs;
+using HS8_BlogProject.Application.Models.VMs.AuthorVMs;
 using HS8_BlogProject.Application.Models.VMs.GenreVMs;
 using HS8_BlogProject.UI.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 {
@@ -10,12 +14,24 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 	{
 		public async Task<IActionResult> Index()
 		{
-			return View(ControllerRepository.ApiHttpGet<List<GenreVM>>("Genre/GetGenres"));
+			var getData = ControllerRepository.ApiHttpGet<List<GenreVM>>("Genre/GetGenres", Request.Cookies["X-Access-Token"]);
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<List<GenreVM>>(results);
+
+                return View(model);
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path });
 		}
 
 		public async Task<IActionResult> Create()
 		{
-			return View(new CreateGenreDTO());
+			if (Request.Cookies["username"] is not null)
+			{
+				return View(new CreateGenreDTO());
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path });
 		}
 
 		[HttpPost]
@@ -23,16 +39,24 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				ControllerRepository.ApiHttpPost<CreateGenreDTO>("Genre/Create", model);
+				ControllerRepository.ApiHttpPost<CreateGenreDTO>("Genre/Create", model, Request.Cookies["X-Access-Token"]);
 				return RedirectToAction("Index");
-			}
-			return View(model);
-		}
+            }
+            return RedirectToAction("Create");
+        }
 
 		public async Task<IActionResult> Edit(int id)
 		{
-			UpdateGenreDTO model = ControllerRepository.ApiHttpGet<UpdateGenreDTO>("Genre/GetById/" + id);
-			return View(model);
+			var getData = ControllerRepository.ApiHttpGet<UpdateGenreDTO>("Genre/GetById/" + id, Request.Cookies["X-Access-Token"]);
+
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<UpdateGenreDTO>(results);
+
+                return View(model);
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path, id});
 		}
 
 		[HttpPost]
@@ -40,15 +64,15 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				ControllerRepository.ApiHttpPut<UpdateGenreDTO>("Genre/Update", model);
+				ControllerRepository.ApiHttpPut<UpdateGenreDTO>("Genre/Update", model, Request.Cookies["X-Access-Token"]);
 				return RedirectToAction("Index");
-			}
-			return View(model);
-		}
+            }
+            return RedirectToAction("Edit");
+        }
 
 		public async Task<IActionResult> Delete(int id)
 		{
-			ControllerRepository.ApiHttpDelete("Genre/Delete/" + id);
+			ControllerRepository.ApiHttpDelete("Genre/Delete/" + id, Request.Cookies["X-Access-Token"]);
 
 			return RedirectToAction("Index");
 		}

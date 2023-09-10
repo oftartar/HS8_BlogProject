@@ -57,10 +57,10 @@
 					<a class="nav-link" asp-area="" asp-controller="" asp-action="">User Panel</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" asp-area="" asp-controller="Account" asp-action="ProfileDetails" asp-route-username="@User.Identity.Name">View Profile</a>
+					<a class="nav-link" asp-area="" asp-controller="Account" asp-action="ProfileDetails" asp-route-username="@Context.Request.Cookies["username"]">View Profile</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" asp-area="" asp-controller="Account" asp-action="Edit" asp-route-username="@User.Identity.Name">Edit Profile</a>
+					<a class="nav-link" asp-area="" asp-controller="Account" asp-action="Edit" asp-route-username="@Context.Request.Cookies["username"]">Edit Profile</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" asp-area="" asp-controller="Account" asp-action="LogOut">Log Out</a>
@@ -80,11 +80,11 @@
 			<div class="sidebar">
 				<!-- Sidebar user (optional) -->
 				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-					<a asp-area="" asp-controller="Account" asp-action="ProfileDetails" asp-route-username="@User.Identity.Name">
+					<a asp-area="" asp-controller="Account" asp-action="ProfileDetails" asp-route-username="@Context.Request.Cookies["username"]">
 						<div class="image">
 							<!-- ToDo: User Image Ekle-->
 							<img src="~/images/defaultuser.jpg" class="img-circle elevation-2" alt="User Image">
-							<span>@User.Identity.Name</span>
+							<span>@Context.Request.Cookies["username"]</span>
 						</div>
 					</a>
 				</div>

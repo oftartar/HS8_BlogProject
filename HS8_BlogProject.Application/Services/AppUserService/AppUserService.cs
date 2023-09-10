@@ -4,6 +4,9 @@ using HS8_BlogProject.Domain.Entities;
 using HS8_BlogProject.Domain.Enums;
 using HS8_BlogProject.Domain.Repositories;
 using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace HS8_BlogProject.Application.Services.AppUserService
 {
@@ -13,13 +16,15 @@ namespace HS8_BlogProject.Application.Services.AppUserService
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AppUserService(IAppUserRepository appUserRepository, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IMapper mapper)
+        public AppUserService(IAppUserRepository appUserRepository, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager)
         {
             _appUserRepository = appUserRepository;
             _signInManager = signInManager;
             _userManager = userManager;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
         public async Task<UpdateProfileDTO> GetByUserName(string userName)
@@ -37,9 +42,27 @@ namespace HS8_BlogProject.Application.Services.AppUserService
             return result;
         }
 
-        public async Task<SignInResult> Login(LoginDTO model)
+        public async Task<List<Claim>> Login(LoginDTO model)
         {
-            return await _signInManager.PasswordSignInAsync(model.UserName, model.Password, false, false);
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+
+                var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+
+                foreach (var userRole in userRoles)
+                {
+                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                }
+
+                return authClaims;
+            }
+            return null;
         }
 
         public async Task LogOut()
@@ -52,6 +75,8 @@ namespace HS8_BlogProject.Application.Services.AppUserService
             if (model.Password == model.ConfirmPassword)
             {
                 var user = _mapper.Map<AppUser>(model);
+
+                user.SecurityStamp = Guid.NewGuid().ToString();
 
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 

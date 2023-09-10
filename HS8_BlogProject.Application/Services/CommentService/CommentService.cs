@@ -137,8 +137,8 @@ namespace HS8_BlogProject.Application.Services.CommentService
                     Title = x.Title,
                     Content = x.Content,
                     AppUserName = x.AppUser.UserName,
+                    AppUserId = x.AppUser.Id,
                     PostTitle = x.Post.Title,
-                    AppUserId = x.AppUserId,
                     PostId = x.PostId
                 },
                 where: x => x.Status != Status.Passive,

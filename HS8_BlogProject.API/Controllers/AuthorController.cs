@@ -1,11 +1,13 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.AuthorDTOs;
 using HS8_BlogProject.Application.Services.AuthorService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HS8_BlogProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorService _authorService;

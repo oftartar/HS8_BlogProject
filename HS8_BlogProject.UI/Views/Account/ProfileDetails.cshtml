@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <a asp-controller="" asp-action="Index" class="btn btn-primary btn-sm float-end mr-2">Back to Home Page</a>
+            <a asp-controller="" asp-action="Index" asp-route-username="@Context.Request.Cookies["username"]" class="btn btn-primary btn-sm float-end mr-2">Back to Home Page</a>
         </div>
     </div>
 </div>

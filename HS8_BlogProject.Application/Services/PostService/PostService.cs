@@ -186,8 +186,8 @@ namespace HS8_BlogProject.Application.Services.PostService
                     AuthorLastName = x.Author.LastName,
                     AuthorImagePath = x.Author.ImagePath,
                     GenreName = x.Genre.Name,
-                    Likes = _mapper.Map<List<LikeVM>>(x.Likes),
-                    Comments = _mapper.Map<List<CommentVM>>(x.Comments)
+                    Likes = _mapper.Map<List<LikeVM>>(x.Likes.Where(x => x.Status != Status.Passive)),
+                    Comments = _mapper.Map<List<CommentVM>>(x.Comments.Where(x => x.Status != Status.Passive))
                 },
                 where: x => x.Id == id,
                 include: x => x.Include(x => x.Author).Include(x => x.Genre).Include(x => x.Comments).Include(x => x.Likes));
@@ -210,8 +210,8 @@ namespace HS8_BlogProject.Application.Services.PostService
                     AuthorLastName = x.Author.LastName,
                     AuthorImagePath = x.Author.ImagePath,
                     GenreName = x.Genre.Name,
-                    Likes = _mapper.Map<List<LikeVM>>(x.Likes),
-                    Comments = _mapper.Map<List<CommentVM>>(x.Comments)
+                    Likes = _mapper.Map<List<LikeVM>>(x.Likes.Where(x => x.Status != Status.Passive)),
+                    Comments = _mapper.Map<List<CommentVM>>(x.Comments.Where(x => x.Status != Status.Passive))
                 },
                 where: x => x.Status != Status.Passive,
                 orderBy: x => x.OrderByDescending(x => x.CreateDate),

@@ -1,5 +1,6 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.LikeDTOs;
 using HS8_BlogProject.Application.Services.LikeService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace HS8_BlogProject.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LikeController : ControllerBase
     {
         private readonly ILikeService _likeService;

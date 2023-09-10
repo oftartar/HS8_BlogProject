@@ -4,6 +4,7 @@ using HS8_BlogProject.Application.Models.VMs;
 using HS8_BlogProject.Application.Services.AppUserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HS8_BlogProject.Presentation.Controllers
 {
@@ -63,8 +64,8 @@ namespace HS8_BlogProject.Presentation.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var result = await _appUserService.Login(loginDTO);
-				if (result.Succeeded)
+				var claims = await _appUserService.Login(loginDTO);
+				if (claims is not null)
 					return RedirectToLocal(returnUrl);
 
 				ModelState.AddModelError("", "Invalid Login Attempt");

@@ -1,7 +1,11 @@
 ﻿using HS8_BlogProject.Application.Models.DTOs.AuthorDTOs;
 using HS8_BlogProject.Application.Models.VMs.AuthorVMs;
+using HS8_BlogProject.Application.Models.VMs.PostVMs;
 using HS8_BlogProject.UI.Controllers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 {
@@ -10,13 +14,31 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            return View(ControllerRepository.ApiHttpGet<List<AuthorVM>>("Author/GetAuthors"));
+            var getData = ControllerRepository.ApiHttpGet<List<AuthorVM>>("Author/GetAuthors", Request.Cookies["X-Access-Token"]);
+
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<List<AuthorVM>>(results);
+
+                return View(model);
+            }
+            return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path });
         }
 
         public async Task<IActionResult> Create()
         {
-            return View(ControllerRepository.ApiHttpGet<CreateAuthorDTO>("Author/CreateAuthor"));
-        }
+            var getData = ControllerRepository.ApiHttpGet<CreateAuthorDTO>("Author/CreateAuthor", Request.Cookies["X-Access-Token"]);
+
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<CreateAuthorDTO>(results);
+
+                return View(model);
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path });
+		}
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateAuthorDTO model)
@@ -38,7 +60,7 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
                     model.UploadPath = null;
                 }
 
-                ControllerRepository.ApiHttpPost<CreateAuthorDTO>("Author/Create", model);
+                ControllerRepository.ApiHttpPost<CreateAuthorDTO>("Author/Create", model, Request.Cookies["X-Access-Token"]);
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Create");
@@ -46,9 +68,17 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            UpdateAuthorDTO model = ControllerRepository.ApiHttpGet<UpdateAuthorDTO>("Author/GetById/" + id);
-            return View(model);
-        }
+            var getData = ControllerRepository.ApiHttpGet<UpdateAuthorDTO>("Author/GetById/" + id, Request.Cookies["X-Access-Token"]);
+
+            if (getData.IsSuccessStatusCode)
+            {
+                string results = getData.Content.ReadAsStringAsync().Result;
+                var model = JsonConvert.DeserializeObject<UpdateAuthorDTO>(results);
+
+                return View(model);
+			}
+			return RedirectToAction("Login", "Account", new { area = "", returnUrl = Request.Path, id });
+		}
 
         [HttpPost]
         public async Task<IActionResult> Edit(UpdateAuthorDTO model)
@@ -70,7 +100,7 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
                     model.UploadPath = null;
                 }
 
-                ControllerRepository.ApiHttpPut<UpdateAuthorDTO>("Author/Update", model);
+                ControllerRepository.ApiHttpPut<UpdateAuthorDTO>("Author/Update", model, Request.Cookies["X-Access-Token"]);
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Edit");
@@ -78,7 +108,7 @@ namespace HS8_BlogProject.UI.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            ControllerRepository.ApiHttpDelete("Author/Delete/" + id);
+            ControllerRepository.ApiHttpDelete("Author/Delete/" + id, Request.Cookies["X-Access-Token"]);
 
             return RedirectToAction("Index");
         }
